@@ -5,6 +5,8 @@ def pascal_triangle(n):
     Returns an empty list if n <= 0
     You can assume n will be always an integer
     """
+    if type(n) is not int:
+        raise TypeError("n must be an integer")
     if n <= 0:
         return []
 
