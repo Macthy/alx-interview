@@ -1,42 +1,50 @@
-#!/usr/bin/bash
+#!/usr/bin/python3
 """
-In a text file, there is a single character H. Your text editor can execute only two operations in this file: Copy All and Paste. Given a number n, write a method that calculates the fewest number of operations needed to result in exactly n H characters in the file.
-
-Prototype: def minOperations(n)
-Returns an integer
-If n is impossible to achieve, return 0
-Example:
-
-n = 9
-
-H => Copy All => Paste => HH => Paste =>HHH => Copy All => Paste => HHHHHH => Paste => HHHHHHHHH
-
-Number of operations: 6
+Defines a method that calculates the fewest number of operations needed
+to result in exactly n copies of a character in a text file, whose
+only operations are Copy All and Paste
 """
+
 
 def minOperations(n):
     """
-    Calculate the fewest number of operations needed to achieve 'n' characters 'H'.
+    calculates the fewest number of operations needed
+    to result in exactly n copies of a character in a text file,
+    whose only operations are Copy All and Paste
 
-    :param n: The desired number of characters 'H'
-    :type n: int
-    :return: The minimum number of operations needed to achieve 'n' characters 'H'
-    :rtype: int
+    parameters:
+        n [int]: number of copies of the character desired
+
+    returns:
+        the minimum number of operations needed to result in n characters
+        or 0 if n is impossible to achieve
     """
-    # Handle the case when n is not achievable
-    if n <= 1:
+    # minOperations will be the sum of all prime factors of n
+    # Check if given a valid positive int greater than 1
+    if type(n) is not int or n <= 1:
         return 0
-
-    factors = []  # List to store prime factors of n
-    divisor = 2  # Start with the smallest prime divisor
-    while n > 1:
-        if n % divisor == 0:
-            factors.append(divisor)  # Add current divisor to the list of factors
-            n //= divisor  # Divide n by the current divisor
-        else:
-            divisor += 1  # Increment divisor to check the next number
-
-    if len(factors) == 0:
-        return 0  # If no prime factors found, n is not achievable
-
-    return sum(factors)  # Return the sum of prime factors as the minimum operations
+    # Start summation list to store divisors
+    summation = []
+    # start divisors at 2, first prime number
+    divisor = 2
+    # divide until no longer divisible or dividing by itself
+    while (n % divisor) is 0 and (n // divisor) is not 1:
+        # each time dividing, add divisor to list to sum later
+        summation.append(divisor)
+        # update the number to show the division
+        n = n // divisor
+    # update divisor to 3, next prime number
+    divisor = 3
+    # keep going until number is less than divisor
+    while n > divisor:
+        # keep completing divisions with new odd numbers
+        while (n % divisor) is 0 and (n // divisor) is not 1:
+            summation.append(divisor)
+            n = n // divisor
+        # move divisor to next odd number
+        # not-strictly prime, but later odd numbers are comprised of previous
+        divisor += 2
+    # add the number itself, last prime number
+    summation.append(n)
+    # return the sum of all prime factors
+    return sum(summation)
