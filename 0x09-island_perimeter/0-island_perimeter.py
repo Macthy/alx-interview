@@ -1,39 +1,25 @@
+#!/usr/bin/python3
+"""Island perimeter computing module.
+"""
+
+
 def island_perimeter(grid):
+    """Computes the perimeter of an island with no lakes.
     """
-    Calculate the perimeter of the island described in the grid.
-
-    Args:
-        grid (List[List[int]]): A 2D grid where 1 represents land, and 0 represents water.
-            The grid is completely surrounded by water, and there is only one island.
-
-    Returns:
-        int: The perimeter of the island.
-
-    Note:
-        - The grid is rectangular, with its width and height not exceeding 100.
-        - Cells are connected horizontally/vertically (not diagonally).
-        - The island doesn’t have “lakes” (water inside that isn’t connected to the water
-          surrounding the island).
-    """
-    perimeter = 0  # Initialize the perimeter to 0
-
-    # Define the directions for horizontal and vertical neighbors
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-
-    # Iterate through the grid to calculate the perimeter
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            if grid[row][col] == 1:
-                for dr, dc in directions:
-                    r, c = row + dr, col + dc
-                    if (
-                        r < 0
-                        or r >= len(grid)
-                        or c < 0
-                        or c >= len(grid[0])
-                        or grid[r][c] == 0
-                    ):
-                        perimeter += 1
-
+    perimeter = 0
+    if type(grid) != list:
+        return 0
+    n = len(grid)
+    for i, row in enumerate(grid):
+        m = len(row)
+        for j, cell in enumerate(row):
+            if cell == 0:
+                continue
+            edges = (
+                i == 0 or (len(grid[i - 1]) > j and grid[i - 1][j] == 0),
+                j == m - 1 or (m > j + 1 and row[j + 1] == 0),
+                i == n - 1 or (len(grid[i + 1]) > j and grid[i + 1][j] == 0),
+                j == 0 or row[j - 1] == 0,
+            )
+            perimeter += sum(edges)
     return perimeter
-
